@@ -142,20 +142,15 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
       child: CheckboxListTile(
         checkColor: widget.checkColor,
         value: item.selected,
-        activeColor: widget.colorator != null
-            ? widget.colorator!(item.value) ?? widget.selectedColor
-            : widget.selectedColor,
+        activeColor: widget.colorator != null ? widget.colorator!(item.value) ?? widget.selectedColor : widget.selectedColor,
         title: Text(
           item.label,
-          style: item.selected
-              ? widget.selectedItemsTextStyle
-              : widget.itemsTextStyle,
+          style: item.selected ? widget.selectedItemsTextStyle : widget.itemsTextStyle,
         ),
         controlAffinity: ListTileControlAffinity.leading,
         onChanged: (checked) {
           setState(() {
-            _selectedValues = widget.onItemCheckedChange(
-                _selectedValues, item.value, checked!);
+            _selectedValues = widget.onItemCheckedChange(_selectedValues, item.value, checked!);
 
             if (checked) {
               item.selected = true;
@@ -180,9 +175,7 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
       padding: const EdgeInsets.all(2.0),
       child: ChoiceChip(
         backgroundColor: widget.unselectedColor,
-        selectedColor: widget.colorator?.call(item.value) ??
-            widget.selectedColor ??
-            Theme.of(context).primaryColor.withOpacity(0.35),
+        selectedColor: widget.colorator?.call(item.value) ?? widget.selectedColor ?? Theme.of(context).primaryColor.withOpacity(0.35),
         label: Text(
           item.label,
           style: item.selected
@@ -203,8 +196,7 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
             item.selected = false;
           }
           setState(() {
-            _selectedValues = widget.onItemCheckedChange(
-                _selectedValues, item.value, checked);
+            _selectedValues = widget.onItemCheckedChange(_selectedValues, item.value, checked);
           });
           if (widget.onSelectionChanged != null) {
             widget.onSelectionChanged!(_selectedValues);
@@ -218,6 +210,10 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: widget.backgroundColor,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+      ),
       title: widget.searchable == false
           ? widget.title ?? const Text("Select")
           : Row(
@@ -234,19 +230,16 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
                               hintText: widget.searchHint ?? "Search",
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: widget.selectedColor ??
-                                      Theme.of(context).primaryColor,
+                                  color: widget.selectedColor ?? Theme.of(context).primaryColor,
                                 ),
                               ),
                             ),
                             onChanged: (val) {
                               List<MultiSelectItem<T>> filteredList = [];
-                              filteredList =
-                                  widget.updateSearchQuery(val, widget.items);
+                              filteredList = widget.updateSearchQuery(val, widget.items);
                               setState(() {
                                 if (widget.separateSelectedItems) {
-                                  _items =
-                                      widget.separateSelected(filteredList);
+                                  _items = widget.separateSelected(filteredList);
                                 } else {
                                   _items = filteredList;
                                 }
@@ -257,9 +250,7 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
                       )
                     : widget.title ?? Text("Select"),
                 IconButton(
-                  icon: _showSearch
-                      ? widget.closeSearchIcon ?? Icon(Icons.close)
-                      : widget.searchIcon ?? Icon(Icons.search),
+                  icon: _showSearch ? widget.closeSearchIcon ?? Icon(Icons.close) : widget.searchIcon ?? Icon(Icons.search),
                   onPressed: () {
                     setState(() {
                       _showSearch = !_showSearch;
@@ -275,15 +266,11 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
                 ),
               ],
             ),
-      contentPadding:
-          widget.listType == null || widget.listType == MultiSelectListType.LIST
-              ? EdgeInsets.only(top: 12.0)
-              : EdgeInsets.all(20),
+      contentPadding: widget.listType == null || widget.listType == MultiSelectListType.LIST ? EdgeInsets.only(top: 12.0) : EdgeInsets.all(20),
       content: Container(
         height: widget.height,
         width: widget.width ?? MediaQuery.of(context).size.width * 0.73,
-        child: widget.listType == null ||
-                widget.listType == MultiSelectListType.LIST
+        child: widget.listType == null || widget.listType == MultiSelectListType.LIST
             ? ListView.builder(
                 itemCount: _items.length,
                 itemBuilder: (context, index) {
@@ -302,8 +289,7 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
               Text(
                 "CANCEL",
                 style: TextStyle(
-                  color: (widget.selectedColor != null &&
-                          widget.selectedColor != Colors.transparent)
+                  color: (widget.selectedColor != null && widget.selectedColor != Colors.transparent)
                       ? widget.selectedColor!.withOpacity(1)
                       : Theme.of(context).primaryColor,
                 ),
@@ -317,8 +303,7 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
               Text(
                 'OK',
                 style: TextStyle(
-                  color: (widget.selectedColor != null &&
-                          widget.selectedColor != Colors.transparent)
+                  color: (widget.selectedColor != null && widget.selectedColor != Colors.transparent)
                       ? widget.selectedColor!.withOpacity(1)
                       : Theme.of(context).primaryColor,
                 ),
